@@ -1,0 +1,87 @@
+@import "tailwindcss";
+
+@theme {
+  --color-background: #06060C;
+  --color-foreground: #f8f8ff;
+
+  --color-brand-neon: #ffffff;
+  --color-brand-gold: #FF7000;      /* Kinetic Orange */
+  --color-brand-cyan: #00FFB2;      /* Mint Pop */
+  --color-brand-violet: #9945FF;    /* Vivid Violet */
+  --color-brand-rose: #FF2D78;      /* Electric Rose */
+  --color-brand-indigo: #3E48FF;    /* Neon Indigo */
+  --color-brand-glass: rgba(255, 255, 255, 0.03);
+
+  --font-heading: var(--font-syncopate), sans-serif;
+  --font-body: var(--font-inter), sans-serif;
+  --font-mono: var(--font-mono), monospace;
+}
+
+:root {
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+}
+::-webkit-scrollbar {
+  width: 0px;
+  background: transparent;
+}
+html,
+body {
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+  background: #06060C;
+}
+::selection {
+  background-color: #FF2D78;
+  color: #fff;
+}
+
+/* AR Noise Overlay */
+.quantum-noise {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0.12;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3CcolorMatrix type='matrix' values='1 0 0 0 0, 0 1 0 0 0, 0 0 1 0 0, 0 0 0 0 1'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  mix-blend-mode: overlay;
+}
+
+/* Musashi Blade Hover */
+.blade-cut {
+  position: relative;
+  overflow: hidden;
+}
+.blade-cut::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: -100%;
+  width: 300%;
+  height: 1px;
+  background: var(--color-brand-gold);
+  transform: rotate(-15deg);
+  opacity: 0;
+  box-shadow: 0 0 20px var(--color-brand-gold);
+}
+.group:hover .blade-cut::after {
+  animation: slice 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+@keyframes slice {
+  0% {
+    left: -100%;
+    opacity: 1;
+  }
+  100% {
+    left: 100%;
+    opacity: 0;
+  }
+}
+
+/* The Vault Door Preloader Transition */
+.vault-door-top {
+  transform-origin: top;
+}
+.vault-door-bottom {
+  transform-origin: bottom;
+}

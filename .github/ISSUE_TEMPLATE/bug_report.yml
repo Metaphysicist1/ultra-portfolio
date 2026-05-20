@@ -1,0 +1,61 @@
+name: Bug Report
+description: Something is broken or looks wrong
+labels: [bug]
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting. Please fill out the details below so the issue can be reproduced quickly.
+
+  - type: textarea
+    id: description
+    attributes:
+      label: What happened?
+      placeholder: Describe the bug clearly and concisely.
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Open the site
+        2. Scroll to section X
+        3. See error
+    validations:
+      required: true
+
+  - type: input
+    id: browser
+    attributes:
+      label: Browser + version
+      placeholder: e.g. Chrome 124, Firefox 125, Safari 17
+    validations:
+      required: true
+
+  - type: input
+    id: os
+    attributes:
+      label: OS
+      placeholder: e.g. macOS 14, Windows 11, Ubuntu 22.04
+    validations:
+      required: true
+
+  - type: dropdown
+    id: webgl
+    attributes:
+      label: WebGL support
+      options:
+        - "Yes — 3D engine loads"
+        - "No — CSS fallback showing"
+        - "Unknown"
+    validations:
+      required: true
+
+  - type: textarea
+    id: console
+    attributes:
+      label: Console errors (if any)
+      render: shell

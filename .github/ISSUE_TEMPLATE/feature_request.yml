@@ -1,0 +1,33 @@
+name: Feature Request
+description: Suggest a new component, section, or visual effect
+labels: [enhancement]
+
+body:
+  - type: textarea
+    id: idea
+    attributes:
+      label: What do you want to add or change?
+      placeholder: Describe the idea clearly.
+    validations:
+      required: true
+
+  - type: textarea
+    id: why
+    attributes:
+      label: Why would this improve the portfolio?
+      placeholder: UX reason, visual impact, missing information, etc.
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Which area does this affect?
+      options:
+        - 3D Engine (WebGL / Three.js)
+        - DOM / HUD panels
+        - Color / typography
+        - Performance
+        - Content / copy
+        - CI/CD / deployment
+        - Other
+    validations:
+      required: true
