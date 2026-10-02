@@ -53,9 +53,10 @@
       "text": "Potsdam, starting soon."
     },
     {
-      "id": "own-company",
+      "id": "world-class-startup",
       "kind": "dream",
-      "title": "A company that runs on its own revenue"
+      "title": "Build a world-class startup",
+      "text": "Every project in this log is a shot at it. The goal is to grow one of them into a large company."
     },
     {
       "id": "intl-hackathon",
@@ -175,8 +176,8 @@
       "kind": "shipped",
       "date": "2024-06",
       "title": "stamo.AI",
-      "text": "Co-founded a text-to-video startup; I'm COO. Won the MediaLab 5,000 Lari prize in 2024.",
-      "url": "https://stamoai.vercel.app"
+      "text": "Co-founded it; I'm COO. Started as text-to-video and won the MediaLab 5,000 Lari prize in 2024. Today it generates branded AR effects for TikTok, Instagram and Snapchat.",
+      "url": "https://stamoai.com"
     },
     {
       "id": "bsc",
