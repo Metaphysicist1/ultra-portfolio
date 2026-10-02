@@ -74,7 +74,7 @@
     {
       "id": "wortweg",
       "kind": "shipped",
-      "date": "2026",
+      "date": "2026-08",
       "title": "Wortweg",
       "text": "A daily German word puzzle: trace a word on the grid, get its der/die/das, plural and a real example. A1–C1, free, no signup, no ads.",
       "url": "https://wortweg.online",
@@ -83,7 +83,7 @@
     {
       "id": "flat-bot",
       "kind": "shipped",
-      "date": "2026",
+      "date": "2026-08",
       "title": "Berlin Flat Search",
       "text": "My Telegram bot for the Berlin/Potsdam flat hunt. It watches Kleinanzeigen, posts each new listing with rent, size and rooms, flags the cheap ones, and lets me mark them saved, applied or removed from the chat."
     },
