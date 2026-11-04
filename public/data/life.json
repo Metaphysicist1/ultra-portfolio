@@ -10,6 +10,7 @@
     "url": "https://metaphysicist1.github.io/papercrawl/"
   },
   "links": [
+    { "label": "Projects", "url": "/projects/" },
     {
       "label": "X",
       "url": "https://x.com/AbasovEdgar"
