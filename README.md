@@ -24,8 +24,7 @@ Run `node --test` before pushing; pushing to `main` deploys.
 
 `/projects/` presents independently deployed apps and websites. Wortweg,
 Paperclaw, UniMate, and Klar remain as featured/live project links. The collection
-below them contains the reviewed Neuro Timer, Nietzsche presentation, and earlier
-stamo.AI website. Repository-only work, GitHub profiles, dataset pages, portfolio
+below them contains the reviewed Neuro Timer and Nietzsche presentation. Repository-only work, GitHub profiles, dataset pages, portfolio
 mirrors, and unverified demos are excluded from the gallery.
 
 `lib/deployed-projects.mjs` is the publication allowlist. Check a working, separate
