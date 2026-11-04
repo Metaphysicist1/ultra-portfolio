@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { discover, publicProject } from '../api/projects.mjs';
+import { discover, publicProject, deployedProject } from '../api/projects.mjs';
 const repo = { name:'sample', private:false, visibility:'public', owner:{login:'Metaphysicist1'}, description:'Public description', homepage:'https://example.org', secretNote:'never publish', localPath:'/home/private' };
 test('only explicitly public owned projects enter a field allowlist', () => {
  for (const changed of [{private:true},{visibility:'private'},{visibility:undefined},{owner:{login:'other'}},{name:'../private'}]) assert.equal(publicProject({...repo,...changed}),null);
@@ -14,10 +14,11 @@ test('unsafe homepage URLs are excluded', () => {
 });
 test('discovery paginates without credentials and filters private rows',async () => {
  let calls=0;
+ const reviewed=Object.fromEntries([...Array.from({length:100},(_,i)=>`p${i}`),'last'].map(name=>[name,{url:'https://example.org/'}]));
  const data=await discover(async (url,options) => {
   calls++;assert.equal(options.headers.Authorization,undefined);assert.match(url,/api.github.com\/users\/Metaphysicist1\/repos/);
   return {ok:true,json:async()=>calls===1?Array.from({length:100},(_,i)=>({...repo,name:`p${i}`})):[{...repo,name:'private',private:true},{...repo,name:'last'}]};
- });
+ }, reviewed);
  assert.equal(calls,2);assert.equal(data.projects.length,101);assert.equal(data.projects.at(-1).name,'last');
 });
 test('upstream failures do not return partial or stale repository lists',async () => {
@@ -47,4 +48,20 @@ test('curated stories cannot cause private projects to appear', () => {
   assert.equal(publicProject({...known,visibility:'private'}),null);
   assert.equal(publicProject(known).story.title,'ClipVault');
   assert.equal(publicProject({...repo,name:'brand-new-public-project'}).story,null);
+});
+
+import { deployedProjects } from '../lib/deployed-projects.mjs';
+test('publication requires a reviewed deployment, not just public code or a homepage', () => {
+  assert.equal(deployedProject(repo),null);
+  assert.equal(deployedProject({...repo,name:'ClipVault'}),null);
+  assert.equal(deployedProject({...repo,name:'ultra-portfolio'}),null);
+  assert.equal(deployedProject({...repo,name:'PneuNet'}),null);
+  const live=deployedProject({...repo,name:'nietzsche',homepage:null});
+  assert.equal(live.website,'https://nietzsche-vortrag.vercel.app/');
+  assert.equal(deployedProject({...repo,name:'nietzsche',private:true}),null);
+  for (const [name, deployment] of Object.entries(deployedProjects)) {
+    assert.ok(stories[name], name);
+    assert.match(deployment.url,/^https:\/\//);
+    assert.doesNotMatch(deployment.url,/github\.com|datascienceportfol|kaggle/);
+  }
 });

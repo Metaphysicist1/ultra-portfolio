@@ -20,7 +20,7 @@ function render() {
     const imageLink = link('', image.src); imageLink.setAttribute('aria-label', `View full image for ${story?.title || p.name}`); imageLink.append(image);
     const caption = document.createElement('figcaption'); caption.textContent = story?.imageLabel || 'Repository preview';
     figure.append(imageLink, caption);
-    const h = document.createElement('h3'); h.append(link(story?.title || p.name, p.url));
+    const h = document.createElement('h3'); h.append(link(story?.title || p.name, p.website));
     const text = document.createElement('p'); text.textContent = story?.description || p.description || 'Explore the source and README on GitHub.';
     const about = document.createElement('details');
     if (story) {
@@ -33,11 +33,10 @@ function render() {
     const meta = document.createElement('p'); meta.className = 'mono meta';
     meta.textContent = [p.language, p.fork && 'Fork', p.archived && 'Archived'].filter(Boolean).join(' · ');
     const links = document.createElement('nav'); links.setAttribute('aria-label', `${p.name} links`);
-    links.append(link('Source ↗', p.url));
-    if (p.website) links.append(link('Website ↗', p.website));
+    links.append(link('Open project ↗', p.website), link('Source ↗', p.url));
     article.append(figure, h, text); if (story) article.append(about); article.append(meta, links); list.append(article);
   }
-  document.querySelector('#result-count').textContent = `${matches.length} of ${projects.length} public repositories`;
+  document.querySelector('#result-count').textContent = `${matches.length} of ${projects.length} deployed projects`;
   if (!matches.length) { const p = document.createElement('p'); p.textContent = 'No projects match your search.'; list.append(p); }
 }
 async function refresh() {
@@ -46,10 +45,10 @@ async function refresh() {
     if (!response.ok) throw new Error();
     const data = await response.json();
     projects = data.projects; render();
-    status.textContent = `From public GitHub repositories · checked ${new Date(data.checkedAt).toLocaleString()} · refreshes every 5 minutes`;
+    status.textContent = `Published projects · checked ${new Date(data.checkedAt).toLocaleString()} · refreshes every 5 minutes`;
   } catch {
     projects = []; list.replaceChildren(); document.querySelector('#result-count').textContent = '';
-    status.replaceChildren(document.createTextNode('The public collection is temporarily unavailable. '), link('View all projects on GitHub ↗', 'https://github.com/Metaphysicist1?tab=repositories'));
+    status.replaceChildren(document.createTextNode('The project collection is temporarily unavailable. '), link('View my GitHub ↗', 'https://github.com/Metaphysicist1?tab=repositories'));
   }
 }
 search.addEventListener('input', render);

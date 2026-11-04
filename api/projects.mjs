@@ -1,5 +1,6 @@
 // Public-only discovery. Deliberately never reads environment tokens, local files, or Atlas.
 import { stories } from '../lib/project-stories.mjs';
+import { deployedProjects } from '../lib/deployed-projects.mjs';
 const OWNER = 'Metaphysicist1';
 export function publicProject(repo) {
   if (repo.private !== false || repo.visibility !== 'public' || repo.owner?.login?.toLowerCase() !== OWNER.toLowerCase()) return null;
@@ -18,7 +19,12 @@ export function publicProject(repo) {
     fork: repo.fork === true, archived: repo.archived === true,
   };
 }
-export async function discover(fetcher = fetch) {
+export function deployedProject(repo, reviewed = deployedProjects) {
+  const project = publicProject(repo);
+  if (!project || !Object.hasOwn(reviewed, project.name)) return null;
+  return { ...project, website: reviewed[project.name].url };
+}
+export async function discover(fetcher = fetch, reviewed = deployedProjects) {
   const projects = [];
   for (let page = 1; page <= 100; page++) {
     const response = await fetcher(`https://api.github.com/users/${OWNER}/repos?type=owner&sort=updated&per_page=100&page=${page}`, {
@@ -28,7 +34,7 @@ export async function discover(fetcher = fetch) {
     if (!response.ok) throw new Error('Public GitHub feed unavailable');
     const repos = await response.json();
     if (!Array.isArray(repos)) throw new Error('Invalid public feed');
-    projects.push(...repos.map(publicProject).filter(Boolean));
+    projects.push(...repos.map(repo => deployedProject(repo, reviewed)).filter(Boolean));
     if (repos.length < 100) return { projects, checkedAt: new Date().toISOString() };
   }
   throw new Error('Incomplete public feed');
