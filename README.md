@@ -38,10 +38,21 @@ GitHub outages/rate limits display an honest error and GitHub link; old reposito
 snapshots are not retained as a fallback. A repository changed to private can
 remain visible until the short existing cache/page refresh expires.
 
-Project descriptions and website links follow public GitHub metadata. Set a
-repository's Description and Website on GitHub to improve its entry. Existing
-featured project stories are editorial content and remain in the page. GitHub
-preview images are external; if an image fails, its project text and links remain.
+Website links and repository discovery follow public GitHub metadata. All 32
+repositories reviewed on 2026-11-04 also have an editorial story and a real local
+image in `lib/project-stories.mjs` and `public/img/projects/`. The story records
+its public documentation source, image source, image type, and review date.
+Images include live website captures, published screenshots/diagrams, interface
+previews from public HTML (without backend connections), and explicitly labeled
+README/source captures when no working visual demo exists. No invented product
+screenshots or private dashboard captures are used. Image links open the full
+uncropped visual; About this project expands implementation detail and provenance.
+
+Reviewed descriptions and image snapshots are editorial, not continuously
+recaptured. New public repos still appear automatically with GitHub metadata and
+a labeled repository preview until reviewed. A matching editorial story is only
+returned after the current public-only visibility check. Existing featured
+Wortweg/Paperclaw stories and the original home-page timeline remain intact.
 The private Project Atlas scanner and repo are separate from this deployment.
 
 Verification: `node --test` covers pagination, public-only filtering, the field

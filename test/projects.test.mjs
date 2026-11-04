@@ -23,3 +23,28 @@ test('discovery paginates without credentials and filters private rows',async ()
 test('upstream failures do not return partial or stale repository lists',async () => {
  await assert.rejects(discover(async()=>({ok:false})),/unavailable/);
 });
+
+import { stories } from '../lib/project-stories.mjs';
+import { existsSync, readFileSync } from 'node:fs';
+
+test('reviewed projects have real local images, full descriptions, and public provenance', () => {
+  assert.equal(Object.keys(stories).length,32);
+  for (const [name,story] of Object.entries(stories)) {
+    assert.ok(story.description.length > 100,name);
+    assert.ok(story.detail.length > 80,name);
+    assert.match(story.image,/^\/img\/projects\/[\w.-]+\.jpg$/);
+    const image = new URL(`../public${story.image}`,import.meta.url);
+    assert.ok(existsSync(image),name);
+    const bytes=readFileSync(image);assert.equal(bytes[0],0xff);assert.equal(bytes[1],0xd8);
+    assert.match(story.sourceUrl,/^https:\/\/github.com\/Metaphysicist1\//);
+    assert.ok(new URL(story.imageSource).protocol==='https:');
+    assert.doesNotMatch(JSON.stringify(story),/localhost|127\.0\.0\.1|\/home\/|\.atlas|handoff/);
+  }
+});
+test('curated stories cannot cause private projects to appear', () => {
+  const known={...repo,name:'ClipVault'};
+  assert.equal(publicProject({...known,private:true}),null);
+  assert.equal(publicProject({...known,visibility:'private'}),null);
+  assert.equal(publicProject(known).story.title,'ClipVault');
+  assert.equal(publicProject({...repo,name:'brand-new-public-project'}).story,null);
+});

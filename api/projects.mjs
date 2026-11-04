@@ -1,4 +1,5 @@
-// Public-only discovery. Deliberately never reads environment tokens, disk, or Atlas.
+// Public-only discovery. Deliberately never reads environment tokens, local files, or Atlas.
+import { stories } from '../lib/project-stories.mjs';
 const OWNER = 'Metaphysicist1';
 export function publicProject(repo) {
   if (repo.private !== false || repo.visibility !== 'public' || repo.owner?.login?.toLowerCase() !== OWNER.toLowerCase()) return null;
@@ -12,6 +13,7 @@ export function publicProject(repo) {
     name: repo.name, description: typeof repo.description === 'string' ? repo.description : '',
     url: `https://github.com/${OWNER}/${repo.name}`, website,
     image: `https://opengraph.githubassets.com/portfolio/${OWNER}/${repo.name}`,
+    story: Object.hasOwn(stories, repo.name) ? stories[repo.name] : null,
     language: typeof repo.language === 'string' ? repo.language : null,
     fork: repo.fork === true, archived: repo.archived === true,
   };
